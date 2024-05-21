@@ -1,4 +1,5 @@
-import { IsNotEmpty, IsInt, IsString, Min} from 'class-validator';
+import { IsNotEmpty, IsString, Validate} from 'class-validator';
+import { IsPriorityValid } from './isPriorityValid';
 
 export class AddTaskDto {
     @IsNotEmpty()
@@ -10,7 +11,10 @@ export class AddTaskDto {
     userId: string;
 
     @IsNotEmpty()
-    @IsInt()
-    @Min(1)
-    priority: number;
+    @IsString()
+    @Validate(IsPriorityValid)
+    priority: string;
 }
+
+
+

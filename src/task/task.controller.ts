@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpStatus, HttpCode, ValidationPipe, Get, Param, ParseUUIDPipe, ConflictException, BadRequestException, NotFoundException } from '@nestjs/common';
+import { Controller, Post, Body, HttpStatus, HttpCode, ValidationPipe, Get, Param, ConflictException, BadRequestException, NotFoundException } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { AddTaskDto } from './add-task.dto';
 
@@ -9,13 +9,13 @@ export class TaskController {
     // Create a new task
     @Post()
     @HttpCode(HttpStatus.CREATED)
-    async addTask(@Body(new ValidationPipe()) addTaskDto: AddTaskDto): Promise<{ name: string, id: string, priority: number }> {
+    async addTask(@Body(new ValidationPipe()) addTaskDto: AddTaskDto): Promise<{ name: string, userId: string, priority: string }> {
         try {
-            const newTask = await this.taskService.addTask(addTaskDto.name, addTaskDto.userId, addTaskDto.priority);
+            const newTask = await this.taskService.addTask(addTaskDto.name, addTaskDto.userId, Number(addTaskDto.priority));
             return {
                 name: newTask.name,
-                id: newTask._id.toString(),
-                priority: newTask.priority
+                userId: newTask.userId,
+                priority: newTask.priority.toString()
             };
         } catch (error) {
             if (error instanceof ConflictException) {
