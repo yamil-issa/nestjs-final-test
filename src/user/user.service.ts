@@ -10,6 +10,7 @@ export class UserService {
     ) {}
 
     async addUser(userEmail: string): Promise<User> {
+        // Check if the user already exists
         const existingUser = await this.userModel.findOne({ email: userEmail });
         if (existingUser) {
             throw new ConflictException('User already exists');
