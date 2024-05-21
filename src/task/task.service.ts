@@ -1,22 +1,37 @@
-import { Injectable, NotImplementedException } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { Task } from './task.model';
 
 @Injectable()
 export class TaskService {
-    constructor() {}
+    constructor(
+        @InjectModel('Task') private readonly taskModel: Model<Task>,
+    ) {}
 
-    addTask(name: string, userId: string, priority: number): Promise<void> {
-        throw new NotImplementedException();
+    async addTask(name: string, userId: string, priority: number): Promise<void> {
+        const existingTask = await this.taskModel.findOne({ name });
+        if (existingTask) {
+            throw new ConflictException('Task already exists');
+        }
+        
+        const newTask = new this.taskModel({
+            name,
+            userId,
+            priority,
+        });
+        await newTask.save();
     }
 
-    getTaskByName(name: string): Promise<unknown> {
-        throw new NotImplementedException();
+    async getTaskByName(name: string): Promise<Task> {
+        return this.taskModel.findOne({ name }).exec();
     }
 
-    getUserTasks(userId: string): Promise<unknown[]> {
-        throw new NotImplementedException();
+    async getUserTasks(userId: string): Promise<Task[]> {
+        return this.taskModel.find({ userId }).exec();
     }
 
-    resetData(): Promise<void> {
-        throw new NotImplementedException();
+    async resetData(): Promise<void> {
+        await this.taskModel.deleteMany({}).exec();
     }
 }
