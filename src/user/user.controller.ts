@@ -7,7 +7,7 @@ import { User } from './user.model';
 export class UserController {
     constructor(private readonly userService: UserService) {}
 
-    // create a new user
+    // Endpoint to create a new user
     @Post()
     @HttpCode(HttpStatus.CREATED)
     async addUser(@Body(new ValidationPipe()) addUserDto: AddUserDto): Promise<{ id: string, email: string }> {
@@ -15,14 +15,14 @@ export class UserController {
         return { id: newUser._id.toString(), email: newUser.email };
     }
 
-    // get a user by email
+    // Endpoint to get a user by email
     @Get()
     @HttpCode(HttpStatus.OK)
     async getUser(@Body(new ValidationPipe()) addUserDto: AddUserDto): Promise<User> {
         return this.userService.getUser(addUserDto.email);
     }
 
-    // reset data
+    // Endpoint to reset data
     @Get('reset')
     @HttpCode(HttpStatus.OK)
     async resetData(): Promise<void> {

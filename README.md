@@ -1,7 +1,11 @@
 ## TODO list
 
-- Pour lancer les tests, utilisez le script npm suivant : `npm run test:e2e:mongodb` 
-- Pour lancer le serveur utilisez le script npm suivant: `npm run start:mongodb` 
+## prerequisites
+Install and start docker 
+
+## Run 
+- To run the tests, use the following npm script: `npm run test:e2e:mongodb` 
+- To start the server, use the following npm script: `npm run start:mongodb` 
 
 
 

@@ -6,7 +6,7 @@ import { AddTaskDto } from './add-task.dto';
 export class TaskController {
     constructor(private readonly taskService: TaskService) {}
 
-    // Create a new task
+    // Endpoint to create a new task
     @Post()
     @HttpCode(HttpStatus.CREATED)
     async addTask(@Body(new ValidationPipe()) addTaskDto: AddTaskDto): Promise<{ name: string, userId: string, priority: string }> {
@@ -26,10 +26,11 @@ export class TaskController {
         }
     }
 
-    // Get tasks for a user by user ID
+    // Endpoint to get all tasks for a specific user by user ID
     @Get('user/:userId')
     @HttpCode(HttpStatus.OK)
     async getUserTasks(@Param('userId') userId: string): Promise<{ name: string, id: string, priority: number }[]> {
+        // Validate the provided user ID format
         if (!this.isValidUserId(userId)) {
             throw new BadRequestException('Invalid userId');
         }
@@ -39,6 +40,7 @@ export class TaskController {
             throw new NotFoundException('No tasks found for the given userId');
         }
 
+        // Map the tasks to the expected response format
         return tasks.map(task => ({
             name: task.name,
             id: task._id.toString(),
