@@ -9,8 +9,8 @@ export class TaskService {
         @InjectModel('Task') private readonly taskModel: Model<Task>,
     ) {}
 
-    async addTask(name: string, userId: string, priority: number): Promise<void> {
-        const existingTask = await this.taskModel.findOne({ name });
+    async addTask(name: string, userId: string, priority: number): Promise<Task> {
+        const existingTask = await this.taskModel.findOne({ name, userId });
         if (existingTask) {
             throw new ConflictException('Task already exists');
         }
@@ -21,6 +21,7 @@ export class TaskService {
             priority,
         });
         await newTask.save();
+        return newTask;
     }
 
     async getTaskByName(name: string): Promise<Task> {

@@ -10,8 +10,9 @@ export class UserController {
     // create a new user
     @Post()
     @HttpCode(HttpStatus.CREATED)
-    async addUser(@Body(new ValidationPipe()) addUserDto: AddUserDto): Promise<void> {
-        await this.userService.addUser(addUserDto.email);
+    async addUser(@Body(new ValidationPipe()) addUserDto: AddUserDto): Promise<{ id: string, email: string }> {
+        const newUser = await this.userService.addUser(addUserDto.email);
+        return { id: newUser._id.toString(), email: newUser.email };
     }
 
     // get a user by email

@@ -9,7 +9,7 @@ export class UserService {
         @InjectModel('User') private readonly userModel: Model<User>,
     ) {}
 
-    async addUser(userEmail: string): Promise<void> {
+    async addUser(userEmail: string): Promise<User> {
         const existingUser = await this.userModel.findOne({ email: userEmail });
         if (existingUser) {
             throw new ConflictException('User already exists');
@@ -19,6 +19,7 @@ export class UserService {
             email
         });
           await newUser.save();
+          return newUser;
     }
 
     async getUser(email: string): Promise<User> {

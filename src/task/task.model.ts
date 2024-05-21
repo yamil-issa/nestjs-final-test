@@ -11,3 +11,12 @@ export const TaskSchema = new Schema<Task>({
     userId: { type: String, required: true },
     priority: { type: Number, required: true },
 });
+
+
+TaskSchema.virtual('id').get(function() {
+    return this._id.toHexString();
+});
+
+TaskSchema.set('toJSON', {
+    virtuals: true,
+});
