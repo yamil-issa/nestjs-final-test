@@ -5,7 +5,6 @@ export class IsPriorityValid implements ValidatorConstraintInterface {
     validate(priority: string, args: ValidationArguments) {
         const priorityNumber = parseInt(priority);
 
-        // Check if the priority is NaN (not a number) or less than 1
         if (isNaN(priorityNumber) || priorityNumber < 1) {
             return false;
         }

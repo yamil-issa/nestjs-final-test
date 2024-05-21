@@ -47,11 +47,6 @@ export class TaskController {
     }
 
     private isValidUserId(userId: string): boolean {
-        // Check if the user ID is not empty
-        if (!userId) {
-            return false;
-        }
-
         // Check if the user ID is a valid mongoDB ID
         const mongoDBIdRegex = /^[0-9a-fA-F]{24}$/;
         return mongoDBIdRegex.test(userId);
